@@ -1,8 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Name: {{ author.first_name }} {{ author.last_name }}</h1>
+    <img src="{{ author.headshot.url }}" width="128, height=128">&nbsp;
+    <span class="h2">{{ author.get_fullname }}</span><br>
+    {% if author.email %}
+        <p><strong><a href="mailto:#">{{ author.email }}</a></strong></p>
+    {% else %}
+        No email contact
+    {% endif %}
+    <p>
+    {% if author.born_at %}
+        {{ author.born_at }}
+        {% if author.died_at %}
+             - {{ author.died_at }}
+        {% else %}
+            -
+        {% endif %}
+    {% endif %}
+    </p>
 
-    <p><strong>Email:</strong> <a href="">{{ author.email }}</a></p> <!-- author detail link not yet defined -->
-
+    {% if author.book_set.all %}
+        <hr>
+        <h3>Books</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Publisher</th>
+                <th>Publication Date</th>
+            </tr>
+            {% for book in author.book_set.all %}
+                <tr>
+                    <td><a href='/books/book/{{ book.id }}'>{{ book.title }}</a></td>
+                    <td><a href='/books/publisher/{{ book.publisher.id }}'>{{ book.publisher.name }}</a></td>
+                    <td>{{ book.pub_date }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+    </h3>
 {% endblock %}

@@ -1,19 +1,35 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Book List</h1>
+    <h1>Books List</h1>
 
     {% if book_list %}
-    <ul>
+        <table class="table table-striped">
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Author(s)</th>
+                <th>Publisher</th>
+                <th>Publication Date</th>
+                <th>Format</th>
+                <th>Category</th>
+            </tr>
+          {% for book in book_list %}
+          <tr>
+              <td><a href="{{ book.get_absolute_url }}"><img src="{{ book.book_cover.url }}" width="128"></a></td>
+              <td><a href="{{ book.get_absolute_url }}"><strong>{{ book.title }}</strong></a></td>
+              <td>{{ book.authors.all|join:", " }}</td>
+              <td><a href='/books/publisher/{{ book.publisher.id }}'>{{ book.publisher.name }}</a></td>
+              <td>{{ book.pub_date }}</td>
+              <td>{{ book.format }}</td>
+              <td>{{ book.category.all|join:', ' }}</td>
+          </tr>
+          {% endfor %}
 
-      {% for book in book_list %}
-      <li>
-        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a>
-      </li>
-      {% endfor %}
+        </table>
 
     </ul>
     {% else %}
-      <p>There are no books in the store.</p>
-    {% endif %}       
+      <p>There are no books.</p>
+    {% endif %}
 {% endblock %}

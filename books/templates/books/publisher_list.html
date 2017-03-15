@@ -4,13 +4,27 @@
     <h1>Publisher List</h1>
 
     {% if publisher_list %}
-    <ul>
+        <table class="table table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Country</th>
+                <th>Website</th>
+            </tr>
+          {% for publisher in publisher_list %}
+          <tr>
+              <td><a href="{{ publisher.get_absolute_url }}"><strong>{{ publisher.name }}</strong></a></td>
+              <td><address>{{ publisher.address }}</address></td>
+              <td>{{ publisher.city }}</td>
+              <td>{{ publisher.state }}</td>
+              <td>{{ publisher.country }}</td>
+              <td>{{ publisher.website|urlize }}</td>
+          </tr>
+          {% endfor %}
 
-      {% for publisher in publisher_list %}
-      <li>
-        <a href="{{ publisher.get_absolute_url }}">{{ publisher.name }}</a>
-      </li>
-      {% endfor %}
+        </table>
 
     </ul>
     {% else %}

@@ -1,8 +1,32 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Name: {{ publisher.name }} </h1>
+    <h2>{{ publisher.name }}</h2>
+    <address>
+        {{ publisher.address }}<br>
+        {{ publisher.city }}&nbsp;{{ publisher.city }}, {{ publisher.country }}
+        <p>
+            <a href="{{ publisher.website }}">{{ publisher.website }}</a>
+        </p>
+    </address>
 
-    <p><strong>Address:</strong> <a href="">{{ publisher.address }}</a></p>
+    {% if publisher.book_set %}
+    <hr>
+    <h3>Published Books</h3>
+    <table class="table table-striped">
+        <tr>
+            <th>Title</th>
+            <th>Author(s)</th>
+            <th>Publication Date</th>
+        </tr>
+        {% for book in publisher.book_set.all %}
+            <tr>
+                <td>{{ book.title }}</td>
+                <td>{{ book.authors.all|join:", " }}</td>
+                <td>{{ book.pub_date }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+    {%  endif %}
     
 {% endblock %}

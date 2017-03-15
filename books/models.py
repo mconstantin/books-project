@@ -40,7 +40,7 @@ class Author(models.Model):
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=20, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    headshot = models.ImageField(upload_to='author_headshots', null=True, blank=True)
+    headshot = models.ImageField(upload_to='images', null=True, blank=True)
     born_at = models.DateField(null=True, blank=True)
     died_at = models.DateField(null=True, blank=True)
 
@@ -48,13 +48,16 @@ class Author(models.Model):
         ordering = ["last_name", "first_name"]
 
     def __str__(self):
-        return 'id={}, {}, {}'.format(self.id, self.last_name, self.first_name)
+        return self.get_fullname()
 
     def get_absolute_url(self):
         """
         Returns the url to access a particular instance of the model.
         """
         return reverse('author-detail', args=[str(self.id)])
+
+    def get_fullname(self):
+        return '{} {} {}'.format(self.first_name, self.middle_name if self.middle_name else '', self.last_name)
 
 
 class BookFormat(models.Model):
@@ -83,7 +86,7 @@ class Book(models.Model):
     isbn = models.CharField(max_length=30)
     book_cover = models.ImageField(upload_to='book_covers', null=True, blank=True)
     format = models.ForeignKey(BookFormat, on_delete=models.DO_NOTHING)
-    category = models.ManyToManyField(BookCategory, null=True, blank=True)
+    category = models.ManyToManyField(BookCategory)
     ranking = models.FloatField(null=True, blank=True)
 
     class Meta:
@@ -99,6 +102,9 @@ class Book(models.Model):
         Returns the url to access a particular instance of the model.
         """
         return reverse('book-detail', args=[str(self.id)])
+
+    def other_authors(self, an_author):
+        return filter(lambda other_author: other_author != an_author, self.authors.all())
 
     def publisher_name(self):
         return self.publisher.name

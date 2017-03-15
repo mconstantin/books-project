@@ -1,8 +1,12 @@
 import os
 import django
+from django.core.files import File
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'booksProject.settings')
 django.setup()
+
+MEDIA_DIR = '/Users/constantinm/Downloads/images'
 
 from books.models import Publisher, Author, Book, BookFormat, BookCategory
 
@@ -26,22 +30,28 @@ def populate():
 
     # add authors
     marquez = add_author('Gabriel', 'Marquez', '1922-03-07', mname='Garcia', email='ggm@literature.nobel.org',
-                         died_at='1988-12-22')
-    twain = add_author('Mark', 'Twain', '1899-01-05', mname='Charles', email='mtwain@books.com', died_at='1956-09-08')
-    elman = add_author('Julia', 'Elman', '1977-06-16')
-    lavin = add_author('Mark', 'Lavin', '1973-11-19')
-    holovety = add_author('Adrian', 'Holovety', '1984-12-25', email='adrianh@email.com')
-    george = add_author('Nigel', 'George', '1969-03-11', email='ng@email.com')
-    bennet = add_author('James', 'Bennet', '1956-09-01', email='jamesb@email.com')
+                         died_at='1988-12-22', headshot=os.path.join(MEDIA_DIR, 'marquez.jpg'))
+    twain = add_author('Mark', 'Twain', '1899-01-05', mname='Charles', email='mtwain@books.com', died_at='1956-09-08',
+                       headshot=os.path.join(MEDIA_DIR, 'twain.jpg'))
+    elman = add_author('Julia', 'Elman', '1977-06-16', headshot=os.path.join(MEDIA_DIR, 'elman.jpg'))
+    lavin = add_author('Mark', 'Lavin', '1973-11-19', headshot=os.path.join(MEDIA_DIR, 'lavin.jpg'))
+    holovety = add_author('Adrian', 'Holovety', '1984-12-25', email='adrianh@email.com',
+                          headshot=os.path.join(MEDIA_DIR, 'holovety.jpg'))
+    george = add_author('Nigel', 'George', '1969-03-11', email='ng@email.com',
+                        headshot=os.path.join(MEDIA_DIR, 'nigel.jpg'))
+    bennet = add_author('James', 'Bennet', '1956-09-01', email='jamesb@email.com',
+                        headshot=os.path.join(MEDIA_DIR, 'bennet.jpg'))
+    jacob = add_author('Jacob', 'Kaplan-Moss', '1967-05-30', email='jkmoss@email.com',
+                        headshot=os.path.join(MEDIA_DIR, 'jacob.jpg'))
 
     # add books
     hard = add_book_format('hard')
     soft = add_book_format('soft')
     kindle = add_book_format('kindle')
 
-    fuction = add_book_category('fiction')
+    fiction = add_book_category('fiction')
     non_fiction = add_book_category('non-fiction')
-    techical = add_book_category('technical')
+    technical = add_book_category('technical')
     travel = add_book_category('travel')
     education = add_book_category('education')
     religious = add_book_category('religious')
@@ -49,12 +59,18 @@ def populate():
     classic = add_book_category('classic')
     poetry = add_book_category('poetry')
 
-    add_book('One Hundered Years of Solitude', marquez, harper_collins, '1978-08-12', hard, (non_fiction, classic), 'isbn879812742')
-    add_book('The Adventures of Hucklberry Finn', twain, penguin_books, '2015-07-25', soft, (non_fiction, classic), 'isbn535613465')
-    add_book('Love in the Time of Cholera', marquez, harper_perrenial, '2007-10-05', soft, non_fiction, 'isbn090812333124')
-    add_book('The Definitive Guide to Django', (elman, holovety), apress, '2015-08-04', soft, techical, 'isbn76376347862')
-    add_book('Django CMS', george, apress, '2016-08-04', hard, techical, 'isbn7678678678')
-    add_book('Lightweight Django', lavin, oreilly, '2014-11-13', kindle, techical, 'isbn898097878')
+    add_book('One Hundered Years of Solitude', marquez, harper_collins, '1978-08-12', hard, (fiction, classic),
+             'isbn879812742', book_cover=os.path.join(MEDIA_DIR, 'one-hundred.jpg'))
+    add_book('The Adventures of Hucklberry Finn', twain, penguin_books, '2015-07-25', soft, (fiction, classic),
+             'isbn535613465', book_cover=os.path.join(MEDIA_DIR, 'finn.jpg'))
+    add_book('Love in the Time of Cholera', marquez, harper_perrenial, '2007-10-05', soft, fiction, 'isbn090812333124',
+             book_cover = os.path.join(MEDIA_DIR, 'love-cholera.jpg'))
+    add_book('The Definitive Guide to Django', (jacob, holovety), apress, '2015-08-04', soft, technical,
+             'isbn76376347862', book_cover=os.path.join(MEDIA_DIR, 'definitive-django.jpg'))
+    add_book('Django CMS', george, apress, '2016-08-04', hard, technical, 'isbn7678678678',
+             book_cover = os.path.join(MEDIA_DIR, 'django-cms.png'))
+    add_book('Lightweight Django', (elman, lavin), oreilly, '2014-11-13', kindle, technical, 'isbn898097878',
+             book_cover=os.path.join(MEDIA_DIR, 'lightweight-django.jpg'))
 
     # Print out what we have added to the user.
     for b in Book.objects.all():
@@ -71,9 +87,13 @@ def clear_data():
     Book.objects.all().delete()
 
 
-def add_author(fname, lname, born_at, mname=None, email=None, died_at=None, headshot=None):
-    return Author.objects.create(first_name=fname, last_name=lname, middle_name=mname, email=email,
+def add_author(fname, lname, born_at, mname=None, email=None, died_at=None, headshot=os.path.join(MEDIA_DIR, 'default.png')):
+    author = Author(first_name=fname, last_name=lname, middle_name=mname, email=email,
                                         born_at=born_at, died_at=died_at, headshot=headshot)
+    if headshot:
+        author.headshot.save(os.path.basename(headshot), File(open(headshot, 'rb')))
+    author.save()
+    return author
 
 
 def add_publisher(name, address, website, city, state, country):
@@ -89,13 +109,16 @@ def add_book_category(cat):
     return BookCategory.objects.create(category=cat)
 
 
-def add_book(title, authors, publisher, pub_date, fmt, cat, isbn):
+def add_book(title, authors, publisher, pub_date, fmt, cat, isbn,
+             book_cover=os.path.join(MEDIA_DIR, 'default_book.jpg')):
     book = Book()
     book.title = title
     book.publisher = publisher
     book.pub_date = pub_date
     book.format = fmt
     book.isbn = isbn
+    if book_cover:
+        book.book_cover.save(os.path.basename(book_cover), File(open(book_cover, 'rb')))
     book.save()
     try:
         iter(authors)

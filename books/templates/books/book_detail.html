@@ -1,12 +1,18 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Title: {{ book.title }}</h1>
-
-    <p><strong>Author:</strong> <a href="">{{ book.title }}</a></p> <!-- author detail link not yet defined -->
-    <p><strong>Authors:</strong> {% for author in book.authors.all %} {{ author }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
-
-    <p><strong>Publisher:</strong> {{ book.publisher }}</p>
-    <p><strong>Publication Date:</strong> {{ book.pub_date }}</p>
+    <img src="{{ book.book_cover.url }}" width="128">&nbsp;
+    <span class="h2">{{ book.title }}</span><br>
+    {% for author in book.authors.all %}
+        <span><a href="/books/author/{{ author.id }}"><em>{{ author.get_fullname }}</em></a></span>
+        {% if not forloop.last %}
+            ,&nbsp
+        {% endif %}
+    {% endfor %}
+    <p></p>
+    <strong><a href="/books/publisher/{{ book.publisher.id }}">{{ book.publisher.name }}</a></strong><br>
+    {{ book.pub_date }}
+    <p><small>{{ book.format }}</small></p>
+    <p>Category: <span>{{ book.category.all|join:', ' }}</span></p>
 
 {% endblock %}

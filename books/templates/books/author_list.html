@@ -1,19 +1,37 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Author List</h1>
+    <h1>Authors List</h1>
 
     {% if author_list %}
-    <ul>
+        <table class="table table-striped">
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Born</th>
+                <th>Died</th>
+            </tr>
+          {% for author in author_list %}
+          <tr>
+              <td><a href="{{ author.get_absolute_url }}"><img src="{{ author.headshot.url }}" width="128, height=128"></a></td>
+              <td><a href="{{ author.get_absolute_url }}"><strong>{{ author.get_fullname }}</strong></a></td>
+              <td><a href="mailto:#">{{ author.email }}</a></td>
+              <td>{{ author.born_at }}</td>
+              <td>
+                  {% if author.died_at %}
+                    {{ author.died_at }}
+                  {% else %}
+                      -
+                  {% endif %}
+              </td>
+          </tr>
+          {% endfor %}
 
-      {% for author in author_list %}
-      <li>
-        <a href="{{ author.get_absolute_url }}">{{ author.first_name }}</a>
-      </li>
-      {% endfor %}
+        </table>
 
     </ul>
     {% else %}
       <p>There are no authors.</p>
-    {% endif %}       
+    {% endif %}
 {% endblock %}
