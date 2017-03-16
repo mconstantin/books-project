@@ -5,7 +5,7 @@ from django.forms import inlineformset_factory
 from django.urls import reverse, reverse_lazy
 
 from .models import Publisher, Author, Book, BookFormat
-from .forms import BookForm
+from .forms import BookForm, PublisherForm, AuthorForm
 from .model_forms import publisher_form, model_formset
 
 
@@ -43,6 +43,20 @@ class CreateBookView(generic.edit.CreateView):
     model = Book
     form_class = BookForm
     success_url = reverse_lazy('books')
+
+
+class CreatePublisherView(generic.edit.CreateView):
+    template_name = 'books/create_publisher.html'
+    model = Publisher
+    form_class = PublisherForm
+    success_url = reverse_lazy('create-book')
+
+
+class CreateAuthorView(generic.edit.CreateView):
+    template_name = 'books/create_author.html'
+    model = Author
+    form_class = AuthorForm
+    success_url = reverse_lazy('create-book')
 
 
 class AuthorListView(generic.ListView):

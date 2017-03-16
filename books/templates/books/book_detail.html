@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <img src="{{ book.book_cover.url }}" width="128">&nbsp;
+    <img src="{{ book.image_url }}" width="128" alt="{{ book.title }}">&nbsp;
     <span class="h2">{{ book.title }}</span><br>
     {% for author in book.authors.all %}
         <span><a href="/books/author/{{ author.id }}"><em>{{ author.get_fullname }}</em></a></span>

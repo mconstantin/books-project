@@ -56,6 +56,18 @@ class Author(models.Model):
         """
         return reverse('author-detail', args=[str(self.id)])
 
+    def image_url(self):
+        """
+        Returns the URL of the image associated with this Object.
+        If an image hasn't been uploaded yet, it returns a stock image
+
+        :returns: str -- the image url
+        """
+        if self.headshot and hasattr(self.headshot, 'url'):
+            return self.headshot.url
+        else:
+            return '/static/images/default_author.png'
+
     def get_fullname(self):
         return '{} {} {}'.format(self.first_name, self.middle_name if self.middle_name else '', self.last_name)
 
@@ -102,6 +114,18 @@ class Book(models.Model):
         Returns the url to access a particular instance of the model.
         """
         return reverse('book-detail', args=[str(self.id)])
+
+    def image_url(self):
+        """
+        Returns the URL of the image associated with this Object.
+        If an image hasn't been uploaded yet, it returns a stock image
+
+        :returns: str -- the image url
+        """
+        if self.book_cover and hasattr(self.book_cover, 'url'):
+            return self.book_cover.url
+        else:
+            return '/static/images/default_book.jpg'
 
     def other_authors(self, an_author):
         return filter(lambda other_author: other_author != an_author, self.authors.all())

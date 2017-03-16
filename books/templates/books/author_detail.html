@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <img src="{{ author.headshot.url }}" width="128, height=128">&nbsp;
+    <img src="{{ author.image_url }}" width="128, height=128" alt="{{ author.get_fullname }}">&nbsp;
     <span class="h2">{{ author.get_fullname }}</span><br>
     {% if author.email %}
         <p><strong><a href="mailto:#">{{ author.email }}</a></strong></p>

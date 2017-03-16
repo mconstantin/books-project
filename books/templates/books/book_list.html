@@ -20,7 +20,7 @@
             </tr>
           {% for book in book_list %}
           <tr>
-              <td><a href="{{ book.get_absolute_url }}"><img src="{{ book.book_cover.url }}" width="128"></a></td>
+              <td><a href="{{ book.get_absolute_url }}"><img src="{{ book.image_url }}" width="128" alt="{{ book.title }}"></a></td>
               <td><a href="{{ book.get_absolute_url }}"><strong>{{ book.title }}</strong></a></td>
               <td>{{ book.authors.all|join:", " }}</td>
               <td><a href='/books/publisher/{{ book.publisher.id }}'>{{ book.publisher.name }}</a></td>

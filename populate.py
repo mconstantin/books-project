@@ -87,7 +87,7 @@ def clear_data():
     Book.objects.all().delete()
 
 
-def add_author(fname, lname, born_at, mname=None, email=None, died_at=None, headshot=os.path.join(MEDIA_DIR, 'default.png')):
+def add_author(fname, lname, born_at, mname=None, email=None, died_at=None, headshot=os.path.join(MEDIA_DIR, 'default_author.png')):
     author = Author(first_name=fname, last_name=lname, middle_name=mname, email=email,
                                         born_at=born_at, died_at=died_at, headshot=headshot)
     if headshot:

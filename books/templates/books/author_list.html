@@ -14,10 +14,16 @@
             </tr>
           {% for author in author_list %}
           <tr>
-              <td><a href="{{ author.get_absolute_url }}"><img src="{{ author.headshot.url }}" width="128, height=128"></a></td>
+              <td><a href="{{ author.get_absolute_url }}"><img src="{{ author.image_url }}" width="128, height=128" alt="{{ author.get_fullname }}"></a></td>
               <td><a href="{{ author.get_absolute_url }}"><strong>{{ author.get_fullname }}</strong></a></td>
               <td><a href="mailto:#">{{ author.email }}</a></td>
-              <td>{{ author.born_at }}</td>
+              <td>
+                  {% if author.born_at %}
+                    {{ author.born_at }}
+                  {% else %}
+                      -
+                  {% endif %}
+              </td>
               <td>
                   {% if author.died_at %}
                     {{ author.died_at }}
