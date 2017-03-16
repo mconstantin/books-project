@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Publishers</title>
+</head>
+<body>
+    {% load crispy_forms_tags %}
+    <form action="", method="post">
+        {{ formset.management_form|crispy }}
+        <table>
+            {% for form in formset %}
+            {{ form }}
+            {% endfor %}
+        </table>
+    </form>
+</body>
+</html>

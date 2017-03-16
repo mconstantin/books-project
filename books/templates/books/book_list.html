@@ -1,7 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Books List</h1>
+    <div style="width: 95%;">
+        <span class="h1">Book List</span>
+        <a href={% url 'create-book' %} class="btn btn-primary pull-right" role="button">Add Book</a>
+    </div>
+{#    <h1>Books List</h1>#}
 
     {% if book_list %}
         <table class="table table-striped">

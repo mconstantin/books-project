@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+{%  extends 'base.html' %}
+
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+    {% load crispy_forms_tags %}
+    {%  block content %}
+        <div class="row">
+            <div class="col-md-6">
+                <h1>Add a Book</h1>
+                <hr/>
+{#                if using the form tags, csrf token and the submit button #}
+{#                in the template yourself, then use the crispy filter instead #}
+{#                of the crispy tag.#}
+{#                See http://stackoverflow.com/a/30355163/2152249#}
+                 <div class="well">
+                    <form action="", method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input type="submit" class="btn btn-success" value="Save">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    {% if uploaded_file_url %}
+        <p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+    {% endif %}
+    {% endblock %}
+</body>
+
+</html>
