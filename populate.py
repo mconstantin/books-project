@@ -1,15 +1,15 @@
 import os
 import django
+from django.conf import settings
 from django.core.files import File
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'booksProject.settings')
 django.setup()
 
-MEDIA_DIR = '/Users/constantinm/Downloads/images'
+MEDIA_DIR = settings.STATIC_DIR
 
 from books.models import Publisher, Author, Book, BookFormat, BookCategory
-
 
 #python script for generating some sample data
 #this script deletes all the data, before populating the new data
