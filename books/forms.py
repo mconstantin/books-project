@@ -17,6 +17,9 @@ from crispy_forms.bootstrap import FormActions, PrependedText, InlineCheckboxes,
 
 
 class BookForm(forms.ModelForm):
+    """
+    The form used to add a book (when clicking on the 'Add Book' button in the books list
+    """
     def __init__(self, *args, **kwargs):
         """
         Override to change the display for a Model(Multi)ChoiceField,
@@ -33,14 +36,21 @@ class BookForm(forms.ModelForm):
         self.helper.form_method = 'post'
         self.helper.form_action = 'create-book'
 
+        # modify the layout for the form
         self.helper.layout = Layout(
             Field('title'),
-            # see this SO for how to make the select and link appear inline: http://stackoverflow.com/a/31226655/2152249
+            # use this layout to add a '+' button inline with the select widget (for authors); used to add a new author.
+            # This opens a new form for adding an author, and the success (and cancel) route is back to this 'add book' form.
+            # If the 'add author' for is to be used from a different context, e.g. an 'Add Author' button on the Authors List page,
+            # then changes are necessary, e.g. to add a '?next' query string to the route url, etc.
+            # See this SO for how to make the select and link appear inline: http://stackoverflow.com/a/31226655/2152249
             Div(
                 Field('authors', style='display: inline-block;'),
                 HTML("""<span class="input-group-btn"><a href="{% url 'create-author' %}" class="btn btn-link"><span class="glyphicon glyphicon-plus"></span></a></span>"""),
                 css_class="input-group"
             ),
+            # use this to group the publisher and pub_date in a fieldset.
+            # use the same technique as above to add a '+' button (for adding a new Publisher instance).
             Fieldset(
                 'Publishing',
                 Div(
@@ -52,15 +62,21 @@ class BookForm(forms.ModelForm):
                 # 'publisher',
                 'pub_date'
             ),
+            # Use this fieldset to group 'book information'
             Fieldset(
-                'Book Info',
+                'Book Info', # name of the fieldset
+                # the 'isbn' field is supposed to be numeric (not validated) and it is prefixed with 'isbn' string
                 PrependedText('isbn', 'ISBN'),
+                # use inline radio button instead of the default select widget (single selection)
                 InlineRadios('format'),
+                # use inline checkboxes instead of the default select widget (multiple selection)
                 InlineCheckboxes('category'),
                 'book_cover'
             ),
+            # group the buttons
             FormActions(
                 Submit('save', 'Save'),
+                # use a link for Cancel
                 HTML("""<a href="{% url 'books' %}" class="btn btn-secondary">Cancel</a>""")
             )
         )
@@ -79,6 +95,9 @@ class BookForm(forms.ModelForm):
 
 
 class PublisherForm(forms.ModelForm):
+    """
+    The form used to add a Publisher (when clicking on the '+' button next to the Publisher, in the 'Add a Book' form.
+    """
     def __init__(self, *args, **kwargs):
         """
         Override to set the form.
@@ -113,6 +132,9 @@ class PublisherForm(forms.ModelForm):
 
 
 class AuthorForm(forms.ModelForm):
+    """
+    The form used to add an Author (when clicking on the '+' button next to the Autor(s), in the 'Add a Book' form.
+    """
     def __init__(self, *args, **kwargs):
         """
         Override to set the form.

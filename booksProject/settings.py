@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # add here to use crispy forms
     'crispy_forms',
+    # add your application here
     'books',
 ]
 
@@ -69,6 +71,7 @@ TEMPLATES = [
     },
 ]
 
+# use the Bootstrap 3 templates
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 WSGI_APPLICATION = 'booksProject.wsgi.application'
@@ -84,6 +87,7 @@ DATABASES = {
     }
 }
 
+# add both below to support file uploads
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = '/media/'

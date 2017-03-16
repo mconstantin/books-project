@@ -26,6 +26,10 @@ class Publisher(models.Model):
         return reverse('publisher-detail', args=[str(self.id)])
 
     def published_books(self):
+        """
+        Method used to show the number of published books in the list of publishers
+        :return:
+        """
         return len(self.book_set.all())
 
     published_books.integer = True
@@ -33,9 +37,7 @@ class Publisher(models.Model):
 
 
 class Author(models.Model):
-    """
-        Author Model
-    """
+    """Author Model"""
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=30)
     middle_name = models.CharField(max_length=20, null=True, blank=True)
@@ -87,9 +89,7 @@ class BookCategory(models.Model):
 
 
 class Book(models.Model):
-    """
-        Book Model
-    """
+    """Book Model"""
     title = models.CharField(max_length=80)
     abstract = models.CharField(max_length=120, null=True, blank=True)
     authors = models.ManyToManyField('Author')
@@ -128,8 +128,10 @@ class Book(models.Model):
             return '/static/images/default_book.jpg'
 
     def other_authors(self, an_author):
+        """Not used"""
         return filter(lambda other_author: other_author != an_author, self.authors.all())
 
+    # used for displaying the publisher's name and a comma-separated list of authors, in the books list
     def publisher_name(self):
         return self.publisher.name
 
