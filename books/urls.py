@@ -14,9 +14,4 @@ urlpatterns = [
     url(r'^publishers/$', views.PublisherListView.as_view(), name='publishers'),
     url(r'^publisher/(?P<pk>\d+)$', views.PublisherDetailView.as_view(), name='publisher-detail'),
     url(r'^publisher/create/$', views.CreatePublisherView.as_view(), name='create-publisher'),
-    # FORMS (experimental - NOT USED)
-    url(r'^forms/publisher/$', views.get_publisher, name='publisher_form'),
-    # url(r'^forms/manage-publishers/$', manage_publishers, name='manage_publisher_form'),
-    url(r'^forms/manage-publishers/$', views.manage_publishers2, name='manage_publisher_form'),
-    url(r'^forms/books/$', views.manage_books, name='books_form'),
 ]

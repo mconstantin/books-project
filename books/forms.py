@@ -176,7 +176,3 @@ class AuthorForm(forms.ModelForm):
         help_texts = {
             'headshot': 'Upload a picture of the author',
         }
-
-
-# NOT USED
-PublishersFormSet = forms.formset_factory(PublisherForm, max_num=3)

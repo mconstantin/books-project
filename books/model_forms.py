@@ -29,15 +29,3 @@ class PublisherForm(forms.ModelForm):
     class Meta:
         model = Publisher
         fields = ['name', 'address', 'city', 'state', 'country', 'website']
-
-"""
-Not used (experiment using modelform_factory)
-"""
-publisher_form = modelform_factory(Publisher, fields=['name', 'address', 'city', 'state', 'country', 'website'],
-                                   widgets={'country': forms.Select(choices=countries)})
-
-"""
-Not used (experiment using modelformset_factory)
-"""
-ModelPublisherFormset = forms.modelformset_factory(Publisher, fields=('name', 'website'), max_num=3, extra=2)
-model_formset = ModelPublisherFormset(queryset=Publisher.objects.filter(name__startswith='S'))
